@@ -1,5 +1,6 @@
 //Run with test script and teleport keybinds only, for testing BE scripts.txt filters
 tk_minimalMode = false;
+tk_isEpoch = isClass (configFile >> "CfgWeapons" >> "Chainsaw");
 
 //Can be changed on the fly by relogging, regardless of init.sqf setting
 dayz_antihack = 0; //0: allow teleport on your client. 1: enable vanilla anticheat on your client.
@@ -7,10 +8,24 @@ dayz_antihack = 0; //0: allow teleport on your client. 1: enable vanilla antiche
 #include "ui\colors.hpp"
 if (!isNil "tk_scriptList") exitWith {diag_log "ERROR: TestKit reinitialized"};
 
+if (tk_isEpoch) then {
+	#define EPOCH
+};
+
+//#define WINTER
+
 tk_scriptList = [
 	["",""],
 	["Invulnerable","tk_invulnerable"],
-	["Items box","tk_box"],
+	#ifdef EPOCH
+	["Weapons box","tk_box",0],
+	["Building box","tk_box",1],
+	["Items box","tk_box",2],
+	["Backpacks box","tk_box",3],
+	["Clothes box","tk_box",4],
+	#else
+	["Items box","tk_box",5],
+	#endif
 	["Mark animals","tk_mark","animals"],
 	["Mark dead","tk_mark","dead"],
 	["Mark events","tk_mark","events"],
@@ -38,12 +53,21 @@ tk_scriptList = [
 	["",""],
 	["Daytime","tk_weather",[2,11]],
 	["Nighttime","tk_weather",[2,23]],
-	["Rainy weather","tk_weather",[3,1]],
-	["Sunny weather","tk_weather",[3,0]],
+	#ifdef WINTER
+	["Snowing","tk_weather",[3,2]],
+	["Blizzard","tk_weather",[3,3]],
+	#else
+	["Raining","tk_weather",[3,1]],
+	#endif
+	["Clear Sky","tk_weather",[3,0]],
 	["",""],
 	["Show hotkeys","tk_infoText"],
 	["Show helper functions","tk_infoText"],
-	["Show server commands","tk_infoText"]
+	["Show server commands","tk_infoText"],
+	["",""],
+	["DZE Loot Tool","tk_lootSpawnPoints"],
+	["DZE Snap Points Tool","tk_snapPoints"],
+	["DZE Mission Spawn Point Tool","tk_missionSpawnPoints"]
 ];
 
 // Scripts
@@ -80,6 +104,9 @@ tk_runScript = compile preprocessFileLineNumbers "testkit\ui\tk_runScript.sqf";
 tk_scriptToggle = compile preprocessFileLineNumbers "testkit\ui\tk_scriptToggle.sqf";
 tk_spawn = compile preprocessFileLineNumbers "testkit\ui\tk_spawn.sqf";
 tk_teleport = compile preprocessFileLineNumbers "testkit\ui\tk_teleport.sqf";
+tk_lootSpawnPoints = compile preprocessFileLineNumbers "testkit\ui\tk_lootSpawnPoints.sqf";
+tk_snapPoints = compile preprocessFileLineNumbers "testkit\ui\tk_snapPoints.sqf";
+tk_missionSpawnPoints = compile preprocessFileLineNumbers "testkit\ui\tk_missionSpawnPoints.sqf";
 
 // Variables
 tk_invulnerableOn = false;
@@ -96,7 +123,10 @@ tk_zombieFreeOn = false;
 tk_zombieSafeOn = false;
 tk_editorMode = !isNull findDisplay 128;
 tk_infoTextOn = "none";
-tk_isEpoch = isClass (configFile >> "CfgWeapons" >> "Chainsaw");
+tk_lootSpawnPointsOn = false;
+tk_snapPointsOn = false;
+tk_missionSpawnPointsOn = false;
+tk_postList = false; // Posts contents of the list box to the rpt.
 
 if (tk_editorMode) then {
 	BIS_fnc_help = compile preprocessFileLineNumbers "ca\modules\functions\misc\fn_help.sqf";

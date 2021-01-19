@@ -43,6 +43,7 @@ tk_invulnerableOn = !tk_invulnerableOn;
 if (tk_invulnerableOn) then {
 	["Invulnerable",true] call tk_scriptToggle;
 	fnc_usec_damageHandlerOriginal = fnc_usec_damageHandler;
+	vehicle player setUnitRecoilCoefficient 0;
 	[] spawn {
 		while {tk_invulnerableOn} do {
 			dayz_temperatur = 36;
@@ -52,10 +53,12 @@ if (tk_invulnerableOn) then {
 			r_player_infected = false;
 			r_player_inpain = false;
 			player setVariable ["combattimeout",0,false];
+			vehicle player setVehicleAmmo 1;
 			uiSleep 1;
 		};
 	};
 } else {
 	["Invulnerable",false] call tk_scriptToggle;
 	fnc_usec_damageHandler = fnc_usec_damageHandlerOriginal;
+	vehicle player setUnitRecoilCoefficient 1;
 };

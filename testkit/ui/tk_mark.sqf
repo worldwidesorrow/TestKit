@@ -74,6 +74,7 @@ if (call compile _status) then {
 					};
 					case "storage": {
 						[{"Green"},{typeOf _this},nearestObjects [CENTER,["DZ_storage_base","VaultStorage","VaultStorageLocked","LockboxStorageLocked","LockboxStorage"],RADIUS]]
+						//[{"Green"},{typeOf _this},nearestObjects [CENTER,["AmmoBoxBig"],RADIUS]]
 					};
 					case "vehicles": {
 						[{if (isPlayer _this) then {"Blue"} else {"Brown"}},{_this call _getCrew},CENTER nearEntities [["Air","LandVehicle","Ship"],RADIUS]]

@@ -29,8 +29,9 @@ switch _option do {
 			publicVariableServer "PVDZ_send";
 		};
 		{
-			if (([_vehicle,_x] call object_getHit) > 0) then {
-				_vehicle setVariable [_strH,0,true];
+			_hits = [_vehicle,_x] call object_getHit;
+			if ((_hits select 0) > 0) then {
+				[_vehicle, (_hits select 1), 0, true] call fnc_veh_handleRepair;
 			};
 		} count (_vehicle call vehicle_getHitpoints);
 		systemChat format["Refueled and repaired: %1's vehicle",_text];

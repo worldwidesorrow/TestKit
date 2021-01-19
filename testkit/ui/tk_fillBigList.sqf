@@ -47,6 +47,9 @@ _filter = {
 			_bigList lbSetColor [_index,_color];
 			_bigList lbSetData [_index,_name];
 			_bigList lbSetPicture [_index,getText (_class >> _image)];
+			if (tk_postList) then {
+				diag_log _name; // Added to create list of vehicle classes
+			};
 		};
 	} count _list;
 	
@@ -95,7 +98,7 @@ switch _this do {
 		_ignoreMagazines = [
 			"bloodBagBase","SkinBase","wholeBloodBagBase","ItemAntibiotic_base","ItemAntibioticEmpty",
 			"ItemBriefcase_Base","ItemBriefcaseEmpty","ItemSilvercase_Base","ItemSodaEmpty","TrashTinCan",
-			"ItemFuelcanEmpty","ItemJerrycanEmpty","ItemFuelBarrelEmpty",
+			"ItemFuelcanEmpty","ItemJerrycanEmpty","ItemFuelBarrelEmpty","45Rnd_545x39_RPK",
 			"ItemJerryMixed","ItemJerryMixed1","ItemJerryMixed2","ItemJerryMixed3","ItemJerryMixed4"
 		];
 		[
