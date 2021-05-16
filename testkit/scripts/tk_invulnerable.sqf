@@ -47,6 +47,7 @@ if (tk_invulnerableOn) then {
 	[] spawn {
 		while {tk_invulnerableOn} do {
 			dayz_temperatur = 36;
+			dayz_hunger = 0;
 			dayz_thirst = 0;
 			fnc_usec_damageHandler = {0};
 			r_player_blood = 12000;
