@@ -1,10 +1,33 @@
 // Create Mission Spawn Points by JasonTM.
 
-private ["_new","_pos","_marker"];
+private ["_new","_pos","_marker","_goodSpot"];
 
 if (isNil "DZE_MissionSpawnMarkers") then {DZE_MissionSpawnMarkers = [];};
 
 _new = _this select 3;
+
+if (_new == "loop") exitWith {
+	for "_i" from 1 to 1000 do {
+		_pos = [getMarkerPos "center",0,((getMarkerSize "center") select 1) * .75,30,0,.2,0] call BIS_fnc_findSafePos;
+		_goodSpot = true;
+		if (count _pos == 2 && {!(_pos in DZE_MissionSpawnMarkers)}) then {
+			{
+				if ((getMarkerPos _x) distance _pos < 100) exitWith {
+					_goodSpot = false;
+				};
+			} count DZE_MissionSpawnMarkers;
+			if (_goodSpot) then {
+				_marker = createMarkerLocal [str _pos, _pos];
+				_marker setMarkerColorLocal "ColorBlack";
+				_marker setMarkerTypeLocal "mil_dot";
+				_marker setMarkerTextLocal (str _i + " Position");
+				DZE_MissionSpawnMarkers set [count DZE_MissionSpawnMarkers, _marker];
+			};
+		};
+	};
+	systemChat format ["You have created %1 markers.",(count DZE_MissionSpawnMarkers)];
+	diag_log formatText ["You have created %1 markers.",(count DZE_MissionSpawnMarkers)];
+};
 
 if (_new == "setMarker") exitWith {
 	_pos = getPos player;
